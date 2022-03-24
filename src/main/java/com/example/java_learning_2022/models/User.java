@@ -16,4 +16,5 @@ public class User {
 //    @Column(name = "user_id")   // зміма назви колонки ІД
     private int id;
     private String name;
+    private int age;
 }
