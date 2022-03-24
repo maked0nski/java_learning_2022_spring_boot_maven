@@ -38,7 +38,6 @@ public class PostController {
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
-    //    locallhost:8080/users         POST        - post user
     @PostMapping("")
     public ResponseEntity<List<Post>> createPost(@RequestBody Post post) {
         if (post == null) {
@@ -57,6 +56,4 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

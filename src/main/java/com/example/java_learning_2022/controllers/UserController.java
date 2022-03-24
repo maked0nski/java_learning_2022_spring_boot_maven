@@ -74,8 +74,5 @@ public class UserController {
         System.out.println(userDAO.findByAge(9));
         System.out.println(userDAO.findByName("Sasha"));
         System.out.println(userDAO.findByNameAndAge("Sasha", 25));
-
     }
-
-
 }
