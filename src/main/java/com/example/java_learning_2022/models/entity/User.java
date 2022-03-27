@@ -1,5 +1,6 @@
-package com.example.java_learning_2022.models;
+package com.example.java_learning_2022.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +19,9 @@ public class User {
     private int id;
     private String name;
     private int age;
+
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "passport_id")
+    @ToString.Exclude
+    private Passport passport;
 }

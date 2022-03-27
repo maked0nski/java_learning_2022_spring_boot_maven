@@ -1,4 +1,4 @@
-package com.example.java_learning_2022.models;
+package com.example.java_learning_2022.models.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

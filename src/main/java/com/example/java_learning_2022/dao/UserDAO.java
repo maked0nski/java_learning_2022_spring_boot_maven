@@ -1,6 +1,6 @@
 package com.example.java_learning_2022.dao;
 
-import com.example.java_learning_2022.models.User;
+import com.example.java_learning_2022.models.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

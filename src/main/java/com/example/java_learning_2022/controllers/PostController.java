@@ -2,7 +2,7 @@ package com.example.java_learning_2022.controllers;
 
 
 import com.example.java_learning_2022.dao.PostDAO;
-import com.example.java_learning_2022.models.Post;
+import com.example.java_learning_2022.models.entity.Post;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
