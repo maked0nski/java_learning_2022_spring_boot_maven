@@ -12,6 +12,12 @@ public class UserWithPassportDTO {
     public UserWithPassportDTO(User user) {
         this.name = user.getName();
         this.age = user.getAge();
-        this.passportDTO = new PassportDTO(user.getPassport());
+        try {
+            this.passportDTO = new PassportDTO(user.getPassport());
+        } catch (Exception e) {
+            this.passportDTO = null;
+        }
     }
+
+
 }
