@@ -1,6 +1,5 @@
 package com.example.java_learning_2022.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,4 +23,9 @@ public class User {
     @JoinColumn(name = "passport_id")
     @ToString.Exclude
     private Passport passport;
+
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    @ToString.Exclude
+    private Address address;
 }

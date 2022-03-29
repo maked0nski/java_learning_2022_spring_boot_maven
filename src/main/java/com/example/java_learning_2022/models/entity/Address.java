@@ -14,14 +14,16 @@ import javax.persistence.*;
 @Setter
 @ToString
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
+public class Address {
 
-public class Passport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String series;
+    private String city;
+    private String street;
 
     @OneToOne(mappedBy = "passport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     private User user;
+
 }
