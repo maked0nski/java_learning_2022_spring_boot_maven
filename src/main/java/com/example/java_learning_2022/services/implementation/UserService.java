@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import com.example.java_learning_2022.models.entity.User;
 import lombok.AllArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.example.java_learning_2022.dao.UserDAO;
@@ -32,17 +31,21 @@ public class UserService implements IUserService {
 
     @Override
     public UserDTO findUserById(int id) {
+        User user = userDAO.findById(id).orElse(new User());
+        if (user.getId() == 0) {
+            return null;
+        }
+        return new UserDTO(user);
+    }
+
+    @Override
+    public UserDTO updateUser(int id, User user) {
         return null;
     }
 
     @Override
-    public UserDTO updateUser(int id, UserDTO user) {
-        return null;
-    }
-
-    @Override
-    public UserDTO createUser(UserDTO user) {
-        return null;
+    public UserDTO createUser(User user) {
+        return new UserDTO(userDAO.save(user));
     }
 
     @Override
@@ -51,7 +54,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void deleteUser(int id) {
-
+    public int deleteUser(int id) {
+        try {
+            userDAO.deleteById(id);
+            return id;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

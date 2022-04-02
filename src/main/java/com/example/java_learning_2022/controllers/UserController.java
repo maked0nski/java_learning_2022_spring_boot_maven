@@ -22,57 +22,54 @@ public class UserController {
     private UserDAO userDAO;
     private IUserService userService;
 
+//    @GetMapping("")
+//    public ResponseEntity<List<UserDTO>> findAll() {
+//        List<User> allUsers = userDAO.findAll();
+//        List<UserDTO> userWithPassportDTOS = allUsers.stream().map(UserDTO::new).collect(Collectors.toList());
+//        ResponseEntity<List<UserDTO>> response = new ResponseEntity<>(userWithPassportDTOS, HttpStatus.OK);
+//        return response;
+//    }
+
     @GetMapping("")
     public ResponseEntity<List<UserDTO>> findAll() {
-        List<User> allUsers = userDAO.findAll();
-        List<UserDTO> userWithPassportDTOS = allUsers.stream().map(UserDTO::new).collect(Collectors.toList());
-        ResponseEntity<List<UserDTO>> response = new ResponseEntity<>(userWithPassportDTOS, HttpStatus.OK);
-        return response;
+        return ResponseEntity.ok().body(userService.findAllUser());     // TODO зробити NOT_FOUND status.
+//        return new ResponseEntity<>(userService.findAllUser(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable int id) {
-        User user = userDAO.findById(id).orElse(new User());
-        if (user.getId() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+        return ResponseEntity.ok(userService.findUserById(id));         // TODO зробити NOT_FOUND status.
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("id") int id, @RequestBody User user) {
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        user.setId(id);
-        userDAO.save(user);
-        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+//        if (user == null) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        user.setId(id);
+//        userDAO.save(user);
+//        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
+        return null;
     }
 
     @PostMapping("")
-    public ResponseEntity<List<UserWithoutPassportDTO>> createUser(@RequestBody User user) {
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        userDAO.save(user);
-        return new ResponseEntity<>(userDAO.findAll().stream().map(UserWithoutPassportDTO::new).collect(Collectors.toList()), HttpStatus.OK);
+    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
     }
 
     @PostMapping("/with-passport")
-    public ResponseEntity<List<UserDTO>> createUserWithPassport(@RequestBody User user) {
-        userDAO.save(user);
-        List<UserDTO> list = userDAO.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
-        return new ResponseEntity<>(list, HttpStatus.OK);
+    public ResponseEntity<UserDTO> createUserWithPassport(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<List<UserDTO>> deleteUser(@PathVariable("id") int id) {
-        try {
-            userDAO.deleteById(id);
-            return new ResponseEntity<>(userDAO.findAll().stream().map(UserDTO::new).collect(Collectors.toList()), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
+        int deleteUserId = userService.deleteUser(id);
+        HttpStatus status = HttpStatus.OK;
+        if (deleteUserId == 0){
+            status= HttpStatus.NOT_FOUND;
         }
+        return new ResponseEntity<>(deleteUserId, status);
     }
 
     @PostMapping("/saveWithCard")
@@ -81,16 +78,16 @@ public class UserController {
     }
 
 
-//    @PostMapping("/all")
-//    public List<UserWithPassportDTO> saveUserBatch(@RequestBody List<User> users){
-//        userService.createUsers(users);
-//        return userService.findAllUser();
-//    }
-
     @PostMapping("/all")
-    public ResponseEntity<UserDTO> saveUserBatch(@RequestBody List<User> users){
+    public List<UserDTO> saveUserBatch(@RequestBody List<User> users){
         userService.createUsers(users);
         return userService.findAllUser();
     }
+
+//    @PostMapping("/all")
+//    public ResponseEntity<UserDTO> saveUserBatch(@RequestBody List<User> users){
+//        userService.createUsers(users);
+//        return userService.findAllUser();
+//    }
 
 }

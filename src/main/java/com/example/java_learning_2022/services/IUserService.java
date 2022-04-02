@@ -13,12 +13,12 @@ public interface IUserService {
 
     UserDTO findUserById(int id);
 
-    UserDTO updateUser(int id, UserDTO user);
+    UserDTO updateUser(int id, User user);
 
-    UserDTO createUser(UserDTO user);
+    UserDTO createUser(User user);
 
     List<UserDTO> createUsers(List<User> users);
 
-    void deleteUser(int id);
+    int deleteUser(int id);
 
 }
