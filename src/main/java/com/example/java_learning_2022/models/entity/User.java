@@ -3,6 +3,8 @@ package com.example.java_learning_2022.models.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 //@Table(name = "username")   // зміма назви (якщо в базі по інакшому називається)
@@ -14,18 +16,24 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "user_id")   // зміма назви колонки ІД
     private int id;
     private String name;
     private int age;
 
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "passport_id")
-    @ToString.Exclude
     private Passport passport;
 
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    @ToString.Exclude
-    private Address address;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_city",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "city_id")
+    )
+    private List<City> cities;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn (name ="user_id")
+    private List<CreditCard> creditCards = new ArrayList<>();
+
+
 }
