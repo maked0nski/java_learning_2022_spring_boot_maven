@@ -2,7 +2,9 @@ package com.example.java_learning_2022.controllers;
 
 
 import com.example.java_learning_2022.dao.PostDAO;
+import com.example.java_learning_2022.models.dto.PostDTO;
 import com.example.java_learning_2022.models.entity.Post;
+import com.example.java_learning_2022.services.IPostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,46 +16,33 @@ import java.util.List;
 @RequestMapping("/posts")
 @AllArgsConstructor
 public class PostController {
+
     private PostDAO postDAO;
+    private IPostService postService;
+
 
     @GetMapping("")
-    public ResponseEntity<List<Post>> findAll() {
-        return new ResponseEntity<>(postDAO.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<PostDTO>> findAll() {
+        return ResponseEntity.ok().body(postService.findAllPost());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findById(@PathVariable("id") int id) {
-        Post post = postDAO.findById(id).orElse(new Post());
-        if (post.getId() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(post, HttpStatus.OK);
+    public ResponseEntity<PostDTO> findById(@PathVariable("id") int id) {
+        return ResponseEntity.ok().body(postService.findById(id));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Post> update(@PathVariable("id") int id, @RequestBody Post post) {
-        if (post.getId() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(post, HttpStatus.OK);
+    public ResponseEntity<PostDTO> update(@PathVariable("id") int id, @RequestBody Post post) {
+        return ResponseEntity.ok().body(postService.updatePost(id, post));
     }
 
     @PostMapping("")
-    public ResponseEntity<List<Post>> createPost(@RequestBody Post post) {
-        if (post == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        postDAO.save(post);
-        return new ResponseEntity<>(postDAO.findAll(), HttpStatus.OK);
+    public ResponseEntity<HttpStatus> createPost(@RequestBody Post post) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<List<Post>> deletePost(@PathVariable("id") int id) {
-        try {
-            postDAO.deleteById(id);
-            return new ResponseEntity<>(postDAO.findAll(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public void deletePost(@PathVariable("id") int id) {
+        postService.deletePost(id);
     }
 }

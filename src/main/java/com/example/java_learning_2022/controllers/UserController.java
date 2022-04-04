@@ -6,6 +6,7 @@ import com.example.java_learning_2022.models.dto.UserWithoutPassportDTO;
 import com.example.java_learning_2022.models.entity.User;
 import com.example.java_learning_2022.services.IUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +20,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserController {
 
-    private UserDAO userDAO;
+//    private UserDAO userDAO;
     private IUserService userService;
-
-//    @GetMapping("")
-//    public ResponseEntity<List<UserDTO>> findAll() {
-//        List<User> allUsers = userDAO.findAll();
-//        List<UserDTO> userWithPassportDTOS = allUsers.stream().map(UserDTO::new).collect(Collectors.toList());
-//        ResponseEntity<List<UserDTO>> response = new ResponseEntity<>(userWithPassportDTOS, HttpStatus.OK);
-//        return response;
-//    }
 
     @GetMapping("")
     public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok().body(userService.findAllUser());     // TODO зробити NOT_FOUND status.
-//        return new ResponseEntity<>(userService.findAllUser(), HttpStatus.OK);
+        return ResponseEntity.ok().body(userService.findAllUser());
     }
 
     @GetMapping("/{id}")
@@ -43,13 +35,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("id") int id, @RequestBody User user) {
-//        if (user == null) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        user.setId(id);
-//        userDAO.save(user);
-//        return new ResponseEntity<>(new UserDTO(user), HttpStatus.OK);
-        return null;
+        return ResponseEntity.ok().body(userService.updateUser(id, user));
     }
 
     @PostMapping("")
@@ -57,26 +43,10 @@ public class UserController {
         return ResponseEntity.ok(userService.createUser(user));
     }
 
-    @PostMapping("/with-passport")
-    public ResponseEntity<UserDTO> createUserWithPassport(@RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
-        int deleteUserId = userService.deleteUser(id);
-        HttpStatus status = HttpStatus.OK;
-        if (deleteUserId == 0){
-            status= HttpStatus.NOT_FOUND;
-        }
-        return new ResponseEntity<>(deleteUserId, status);
-    }
-
-    @PostMapping("/saveWithCard")
-    public void saveWithCard(@RequestBody User user){
-        userDAO.save(user);
-    }
-
+//    @PostMapping("/saveWithCard")
+//    public void saveWithCard(@RequestBody User user){
+//        userDAO.save(user);
+//    }
 
     @PostMapping("/all")
     public List<UserDTO> saveUserBatch(@RequestBody List<User> users){
@@ -84,10 +54,9 @@ public class UserController {
         return userService.findAllUser();
     }
 
-//    @PostMapping("/all")
-//    public ResponseEntity<UserDTO> saveUserBatch(@RequestBody List<User> users){
-//        userService.createUsers(users);
-//        return userService.findAllUser();
-//    }
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable("id") int id) {
+        userService.deleteUser(id);
+    }
 
 }
