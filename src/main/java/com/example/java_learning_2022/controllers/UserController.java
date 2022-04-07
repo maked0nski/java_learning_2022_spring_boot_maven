@@ -6,14 +6,10 @@ import com.example.java_learning_2022.models.dto.UserWithoutPassportDTO;
 import com.example.java_learning_2022.models.entity.User;
 import com.example.java_learning_2022.services.IUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")

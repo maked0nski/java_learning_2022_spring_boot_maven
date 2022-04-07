@@ -37,7 +37,6 @@ public class PostService implements IPostService {
     public PostDTO updatePost(int id, Post post) {
         Post postBase = postDAO.findById(id).orElse(null);
         if (postBase != null) {
-
             if (post.getTitle() != "") {
                 postBase.setTitle(post.getTitle());
             }
