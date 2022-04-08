@@ -21,10 +21,10 @@ public class MailSendService {
         try {
             mimeMessage.setFrom(new InternetAddress("my_email@gmail.com"));
             helper.setTo(user.getEmail());
-            helper.setText("<h1>message</h1>", true);
+            helper.setText("<h1>My message</h1>", true);
 
             String fileFormat = multipartFile.getContentType().split("/")[1];
-            helper.addAttachment("somefilename." + fileFormat, multipartFile);
+            helper.addAttachment("myPhoto." + fileFormat, multipartFile);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

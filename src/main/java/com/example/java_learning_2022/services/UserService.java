@@ -39,5 +39,4 @@ public class UserService {
         return userDAO.findById(id).get().getAvatar();
     }
 
-
 }
