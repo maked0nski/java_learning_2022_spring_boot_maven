@@ -1,5 +1,6 @@
 package com.example.java_learning_2022.configs;
 
+import com.example.java_learning_2022.dao.AuthTokenDAO;
 import com.example.java_learning_2022.dao.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private DaoAuthenticationProvider daoAuthenticationProvider;
     private CorsConfigurationSource corsConfigurationSource;
-
     private UserService userService;
+
+    private AuthTokenDAO authTokenDAO;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -39,10 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeHttpRequests()
                 .antMatchers(HttpMethod.GET, "/", "/hello").permitAll()
                 .antMatchers(HttpMethod.POST, "/save", "/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/securityURL").hasAnyRole("USER")
+                .antMatchers(HttpMethod.GET, "/securityURL", "/getInfo", "/admin/**").hasAnyRole("USER")
                 .and()
                 .addFilterBefore(new LoginFilter("/login", authenticationManager(), userService), UsernamePasswordAuthenticationFilter.class)
-
+                .addFilterBefore(new RequestsProcessingFilter(authTokenDAO), UsernamePasswordAuthenticationFilter.class)
 
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

@@ -31,4 +31,8 @@ public class MainController {
         userService.save(user);
     }
 
+    @GetMapping("/getInfo")
+    public String getInfo() {
+        return "Some Info";
+    }
 }

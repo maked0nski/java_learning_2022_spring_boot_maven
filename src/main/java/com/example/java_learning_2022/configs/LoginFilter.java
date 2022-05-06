@@ -19,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -68,13 +67,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         AuthToken authToken = new AuthToken();
         authToken.setToken(jwtToken);
         authToken.setUser(user);
-        System.out.println(jwtToken);
+
+        System.out.println("jwtToken - " + jwtToken);
+
         user.getAuthTokens().add(authToken);
         userService.save(user);
         response.addHeader("Authorization", "Bearer " + jwtToken);
         chain.doFilter(request, response);
-
-
     }
 }
 
